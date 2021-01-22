@@ -26,23 +26,31 @@ class Board extends React.Component {
     );
   }
 
-  render() {
-    let rows = [];
-    for (let row = 0; row < boardSize; row++) {
-      let cols = [<div className="row-label" key={0}>{row + 1}</div>];
-      for (let col = 0; col < boardSize; col++) {
-        let square = row * boardSize + col;
-        cols.push(this.renderSquare(square));
-      }
-
-      rows.push(<div className="board-row" key={rows.length}>{cols}</div>);
+  renderRow(row) {
+    let cols = [<div className="row-label" key={0}>{row + 1}</div>];
+    for (let col = 0; col < boardSize; col++) {
+      let square = row * boardSize + col;
+      cols.push(this.renderSquare(square));
     }
 
+    return (<div className="board-row" key={row}>{cols}</div>);
+  }
+
+  renderLabelRow() {
     let labelCols = [<div className="col-label" key={0}></div>];
     for (let labelCol = 0; labelCol < boardSize; labelCol++) {
         labelCols.push(<div className="col-label" key={labelCol + 1}>a</div>);
     }
-    rows.push(<div className="board-row" key={rows.length}>{labelCols}</div>);
+
+    return (<div className="board-row" key={boardSize}>{labelCols}</div>);
+  }
+
+  render() {
+    let rows = [];
+    for (let row = 0; row < boardSize; row++) {
+      rows.push(this.renderRow(row));
+    }
+    rows.push(this.renderLabelRow());
 
     return <div>{rows}</div>;
   }
