@@ -17,6 +17,21 @@ ol, ul {
   margin-bottom: 10px;
 }
 
+.row-label {
+  float: left;
+  height: 34px;
+  line-height: 34px;
+  text-align: right;
+  width: 34px;
+}
+
+.col-label {
+  float: left;
+  height: 34px;
+  text-align: center;
+  width: 34px;
+}
+
 .square {
   background: #fff;
   border: 1px solid #999;
@@ -47,4 +62,8 @@ ol, ul {
 
 .game-info {
   margin-left: 20px;
+}
+
+.selected button {
+  font-weight: bold;
 }
