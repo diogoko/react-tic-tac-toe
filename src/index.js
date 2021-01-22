@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+const boardSize = 3;
+
 function Square(props) {
   return (
     <button
@@ -19,39 +21,30 @@ class Board extends React.Component {
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
+        key={i + 1}
       />
     );
   }
 
   render() {
-    return (
-      <div>
-        <div className="board-row">
-          <div className="row-label">1</div>
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          <div className="row-label">2</div>
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          <div className="row-label">3</div>
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-        <div className="board-row">
-          <div className="col-label"></div>
-          <div className="col-label">a</div>
-          <div className="col-label">b</div>
-          <div className="col-label">c</div>
-        </div>
-      </div>
-    );
+    let rows = [];
+    for (let row = 0; row < boardSize; row++) {
+      let cols = [<div className="row-label" key={0}>{row + 1}</div>];
+      for (let col = 0; col < boardSize; col++) {
+        let square = row * boardSize + col;
+        cols.push(this.renderSquare(square));
+      }
+
+      rows.push(<div className="board-row" key={rows.length}>{cols}</div>);
+    }
+
+    let labelCols = [<div className="col-label" key={0}></div>];
+    for (let labelCol = 0; labelCol < boardSize; labelCol++) {
+        labelCols.push(<div className="col-label" key={labelCol + 1}>a</div>);
+    }
+    rows.push(<div className="board-row" key={rows.length}>{labelCols}</div>);
+
+    return <div>{rows}</div>;
   }
 }
 
@@ -77,8 +70,8 @@ class Game extends React.Component {
 
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     const xIsNext = !this.state.xIsNext;
-    const row = Math.floor(i / 3);
-    const col = i % 3;
+    const row = Math.floor(i / boardSize);
+    const col = i % boardSize;
     this.setState({
       history: [...history, {squares, row, col}],
       move: history.length,
