@@ -23,7 +23,7 @@ function Square(props) {
 class Board extends React.Component {
   renderSquare(i) {
     const winner = this.props.winnerSquares.includes(i);
-    
+
     return (
       <Square
         value={this.props.squares[i]}
@@ -47,7 +47,8 @@ class Board extends React.Component {
   renderLabelRow() {
     let labelCols = [<div className="col-label" key={0}></div>];
     for (let labelCol = 0; labelCol < boardSize; labelCol++) {
-        labelCols.push(<div className="col-label" key={labelCol + 1}>a</div>);
+      let label = String.fromCharCode('a'.charCodeAt(0) + labelCol);
+      labelCols.push(<div className="col-label" key={labelCol + 1}>{label}</div>);
     }
 
     return (<div className="board-row" key={boardSize}>{labelCols}</div>);
