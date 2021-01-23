@@ -65,6 +65,7 @@ class Game extends React.Component {
       }],
       xIsNext: true,
       move: 0,
+      movesSort: 'asc',
     };
   }
 
@@ -94,6 +95,12 @@ class Game extends React.Component {
     });
   }
 
+  movesSortChange(event) {
+    this.setState({
+      movesSort: event.target.value,
+    });
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.move];
@@ -120,6 +127,7 @@ class Game extends React.Component {
         </li>
       );
     });
+    const sortedMoves = (this.state.movesSort === 'asc') ? moves : moves.slice().reverse();
 
     return (
       <div className="game">
@@ -131,7 +139,11 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <select value={this.state.movesSort} onChange={(event) => this.movesSortChange(event)}>
+            <option value="asc">First to last</option>
+            <option value="desc">Last to first</option>
+          </select>
+          <ol reversed={this.state.movesSort === 'asc' ? '' : 'reversed'}>{sortedMoves}</ol>
         </div>
       </div>
     );
