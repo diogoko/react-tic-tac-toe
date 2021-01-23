@@ -127,7 +127,9 @@ class Game extends React.Component {
         </li>
       );
     });
-    const sortedMoves = (this.state.movesSort === 'asc') ? moves : moves.slice().reverse();
+
+    const movesReversed = (this.state.movesSort !== 'asc');
+    const sortedMoves = movesReversed ? moves.slice().reverse() : moves;
 
     return (
       <div className="game">
@@ -143,7 +145,7 @@ class Game extends React.Component {
             <option value="asc">First to last</option>
             <option value="desc">Last to first</option>
           </select>
-          <ol reversed={this.state.movesSort === 'asc' ? '' : 'reversed'}>{sortedMoves}</ol>
+          <ol reversed={movesReversed ? 'reversed' : ''}>{sortedMoves}</ol>
         </div>
       </div>
     );
