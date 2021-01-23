@@ -5,9 +5,14 @@ import './index.css';
 const boardSize = 3;
 
 function Square(props) {
+  let className = 'square';
+  if (props.winner) {
+    className += ' winner';
+  }
+
   return (
     <button
-      className="square"
+      className={className}
       onClick={props.onClick}
     >
       {props.value}
@@ -17,11 +22,14 @@ function Square(props) {
 
 class Board extends React.Component {
   renderSquare(i) {
+    const winner = this.props.winnerSquares.includes(i);
+    
     return (
       <Square
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
         key={i + 1}
+        winner={winner}
       />
     );
   }
@@ -73,7 +81,7 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.move + 1);
     const current = history[history.length - 1];
     const squares = [...current.squares];
-    if (calculateWinner(squares) || squares[i]) {
+    if (calculateWinner(squares).player !== null || squares[i]) {
       return;
     }
 
@@ -104,7 +112,7 @@ class Game extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.move];
-    const winner = calculateWinner(current.squares);
+    const {player: winner, squares: winnerSquares} = calculateWinner(current.squares);
     let status;
     if (winner) {
       status = `Winner: ${winner}`;
@@ -136,6 +144,7 @@ class Game extends React.Component {
         <div className="game-board">
           <Board
             squares={current.squares}
+            winnerSquares={winnerSquares}
             onClick={(i) => this.handleClick(i)}
           />
         </div>
@@ -166,10 +175,10 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return {player: squares[a], squares: lines[i]};
     }
   }
-  return null;
+  return {player: null, squares: []};
 }
 
 // ========================================
